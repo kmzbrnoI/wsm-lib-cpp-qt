@@ -1,6 +1,18 @@
 #ifndef _WSM_H_
 #define _WSM_H_
 
+/*
+This file implements a Wsm class which represents API to the Wireless
+SpeedoMeter library.
+
+Just connect to the serial port by calling 'conntec' method and wait for
+signals. Wsm communicates only in direction Wsm -> PC, so almost all the
+information is transmitted to the user via Qt signals.
+
+Long-term-measure allows to measure speed in long time and then average measured
+speed and calculate abs(min-max), so the user knows diffusion.
+*/
+
 #include <QByteArray>
 #include <QSerialPort>
 #include <QTimer>
