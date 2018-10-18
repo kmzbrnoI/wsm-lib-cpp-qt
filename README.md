@@ -1,4 +1,4 @@
-# Wsm Qt XpressNET library
+# C++ Qt Wsm library
 
 This repository contains a fully open-source C++ library for communicating
 with a [Wireless SpeedoMeter](https://github.com/kmzbrnoI/wsm-pcb).
