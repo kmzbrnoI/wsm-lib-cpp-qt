@@ -1,5 +1,7 @@
-#ifndef _Q_STR_EXCEPTION_H_
-#define _Q_STR_EXCEPTION_H_
+#ifndef _WSM_Q_STR_EXCEPTION_H_
+#define _WSM_Q_STR_EXCEPTION_H_
+
+namespace Wsm {
 
 class QStrException {
 private:
@@ -11,5 +13,7 @@ public:
 	const QString str() const throw () { return this->m_err_msg; };
 	operator QString() const { return this->m_err_msg; }
 };
+
+}//namespace Wsm
 
 #endif
