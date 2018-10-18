@@ -18,7 +18,7 @@ speed and calculate abs(min-max), so the user knows diffusion.
 #include <QTimer>
 #include <QDateTime>
 
-#include "../q-str-exception.h"
+#include "q-str-exception.h"
 
 namespace Wsm {
 
