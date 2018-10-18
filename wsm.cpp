@@ -26,6 +26,8 @@ void Wsm::connect(QString portname) {
 
 	if (!m_serialPort.open(QIODevice::ReadOnly))
 		throw EOpenError(m_serialPort.errorString());
+
+	m_serialPort.clear();
 }
 
 void Wsm::disconnect() {
