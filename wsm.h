@@ -49,7 +49,7 @@ public:
 	uint32_t distRaw() const;
 	double calcDist(uint32_t rawDelta) const;
 
-	void connect(QString portname);
+	void connect(const QString& portname);
 	void disconnect();
 	bool connected() const;
 
@@ -76,15 +76,15 @@ private:
 	QSerialPort m_serialPort;
 	QByteArray m_readData;
 	QDateTime m_receiveTimeout;
-	uint32_t m_distStart;
-	uint32_t m_dist;
+	uint32_t m_distStart = 0;
+	uint32_t m_dist = 0;
 	QTimer m_speedTimer;
 	bool m_speedOk = false;
 	bool m_lt_measuring = false;
-	double m_lt_sum;
-	unsigned m_lt_count;
-	unsigned m_lt_count_max;
-	double m_lt_min, m_lt_max;
+	double m_lt_sum = 0;
+	unsigned m_lt_count = 0;
+	unsigned m_lt_count_max = 0;
+	double m_lt_min = 0, m_lt_max = 0;
 
 	void parseMessage(QByteArray message);
 	void recordLt(double speed);

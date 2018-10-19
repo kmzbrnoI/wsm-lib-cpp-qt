@@ -8,7 +8,7 @@
 namespace Wsm {
 
 Wsm::Wsm(unsigned int scale, double wheelDiameter, QObject *parent)
-	: QObject(parent), scale(scale), wheelDiameter(wheelDiameter), m_distStart(0) {
+	: QObject(parent), scale(scale), wheelDiameter(wheelDiameter) {
 	m_serialPort.setBaudRate(9600);
 	m_serialPort.setFlowControl(QSerialPort::FlowControl::HardwareControl);
 	m_serialPort.setReadBufferSize(256);
@@ -21,7 +21,7 @@ Wsm::Wsm(unsigned int scale, double wheelDiameter, QObject *parent)
 	                 this, SLOT(handleError(QSerialPort::SerialPortError)));
 }
 
-void Wsm::connect(QString portname) {
+void Wsm::connect(const QString& portname) {
 	m_serialPort.setPortName(portname);
 
 	if (!m_serialPort.open(QIODevice::ReadOnly))
