@@ -1,6 +1,8 @@
 #ifndef _WSM_Q_STR_EXCEPTION_H_
 #define _WSM_Q_STR_EXCEPTION_H_
 
+#include <QString>
+
 namespace Wsm {
 
 class QStrException {
