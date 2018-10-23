@@ -42,8 +42,8 @@ class Wsm : public QObject {
 	Q_OBJECT
 
 public:
-	static const unsigned _VERSION_MAJOR = WSM_VERSION_MAJOR;
-	static const unsigned _VERSION_MINOR = WSM_VERSION_MINOR;
+	static constexpr unsigned _VERSION_MAJOR = WSM_VERSION_MAJOR;
+	static constexpr unsigned _VERSION_MINOR = WSM_VERSION_MINOR;
 
 	unsigned int scale;
 	double wheelDiameter; // unit: mm
