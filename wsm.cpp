@@ -2,6 +2,7 @@
 #include <QSerialPort>
 #include <QtMath>
 #include <cmath>
+#include <algorithm>
 
 #include "wsm.h"
 
@@ -162,11 +163,8 @@ void Wsm::recordLt(double speed) {
 	if (m_lt_count == 1)
 		m_lt_min = m_lt_max = speed;
 
-	if (speed > m_lt_max)
-		m_lt_max = speed;
-
-	if (speed < m_lt_min)
-		m_lt_min = speed;
+	m_lt_max = std::max(speed, m_lt_max);
+	m_lt_min = std::min(speed, m_lt_min);
 
 	if (m_lt_count == m_lt_count_max) {
 		m_lt_measuring = false;
