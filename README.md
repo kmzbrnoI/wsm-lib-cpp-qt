@@ -28,6 +28,9 @@ You may use this library in two major ways:
 ## Basic information
 
  * See `wsm.h` for API specification.
+ * To change the version of this library, update both constants at `wsm.pro`
+   file and `wsm.h` file. This is needed for proper behavior as a standalone-lib
+   and plain header too.
 
 ## Authors
 

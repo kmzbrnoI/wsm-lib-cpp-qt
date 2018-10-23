@@ -20,6 +20,9 @@ speed and calculate abs(min-max), so the user knows diffusion.
 
 #include "q-str-exception.h"
 
+#define WSM_VERSION_MAJOR 1
+#define WSM_VERSION_MINOR 0
+
 namespace Wsm {
 
 const unsigned int _BUF_IN_TIMEOUT_MS = 60;
@@ -39,6 +42,9 @@ class Wsm : public QObject {
 	Q_OBJECT
 
 public:
+	static const unsigned _VERSION_MAJOR = WSM_VERSION_MAJOR;
+	static const unsigned _VERSION_MINOR = WSM_VERSION_MINOR;
+
 	unsigned int scale;
 	double wheelDiameter; // unit: mm
 
