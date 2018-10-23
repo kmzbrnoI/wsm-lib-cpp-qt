@@ -77,10 +77,10 @@ void Wsm::handleError(QSerialPort::SerialPortError serialPortError) {
 }
 
 void Wsm::parseMessage(QByteArray message) {
-	const uint8_t MSG_SPEED = 0x1;
-	const uint8_t MSG_BATTERY = 0x2;
+	constexpr uint8_t MSG_SPEED = 0x1;
+	constexpr uint8_t MSG_BATTERY = 0x2;
 
-	uint8_t type = (static_cast<uint8_t>(message[0]) >> 4) & 0x7;
+	const uint8_t type = (static_cast<uint8_t>(message[0]) >> 4) & 0x7;
 	if (type == MSG_SPEED) {
 		// Speed measured
 
