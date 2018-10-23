@@ -77,57 +77,64 @@ void Wsm::handleError(QSerialPort::SerialPortError serialPortError) {
 }
 
 void Wsm::parseMessage(QByteArray& message) {
-	constexpr uint8_t MSG_SPEED = 0x1;
-	constexpr uint8_t MSG_BATTERY = 0x2;
-
-	const uint8_t type = (static_cast<uint8_t>(message[0]) >> 4) & 0x7;
-	if (type == MSG_SPEED) {
-		// Speed measured
-
-		if (0x81 == static_cast<uint8_t>(message[1])) {
-			// Speed measured via interval measuring.
-			if (!m_speedOk) {
-				m_speedOk = true;
-				speedReceiveRestore();
-			}
-			m_speedTimer.start(_SPEED_RECEIVE_TIMEOUT);
-
-			uint16_t interval = \
-					((static_cast<uint8_t>(message[2]) & 0x03) << 14) | \
-					((static_cast<uint8_t>(message[3]) & 0x7F) << 7) |  \
-					(static_cast<uint8_t>(message[4]) & 0x7F);
-
-			double speed;
-			if (interval == 0xFFFF) {
-				speed = 0;
-			} else {
-				speed = (static_cast<double>(M_PI) * wheelDiameter * F_CPU * 3.6 * scale / 1000) /
-				        (HOLE_COUNT * PSK * interval);
-			}
-			speedRead(speed, 0xFFFF);
-			if (m_lt_measuring)
-				recordLt(speed);
-		} else if (0x82 == static_cast<uint8_t>(message[1])) {
-			// distance measured
-			m_dist = \
-					((static_cast<uint8_t>(message[2]) & 0x0F) << 28) | \
-					((static_cast<uint8_t>(message[3]) & 0x7F) << 21) | \
-					((static_cast<uint8_t>(message[4]) & 0x7F) << 14) | \
-					((static_cast<uint8_t>(message[5]) & 0x7F) << 7) |  \
-					(static_cast<uint8_t>(message[6]) & 0x7F);
-
-			uint32_t distDelta = m_dist - m_distStart;
-			distanceRead(calcDist(distDelta), distDelta);
-		}
-	} else if (type == MSG_BATTERY) {
-		uint16_t measured = (static_cast<uint8_t>(message[1] & 0x07) << 7) | (static_cast<uint8_t>(message[2]) & 0x7F);
-		double voltage = (measured * 4.587 / 1024);
-		batteryRead(voltage, measured);
-
-		bool critical = (message[1] >> 6) & 0x1;
-		if (critical)
-			batteryCritical();
+	switch (static_cast<MsgRecvType>((message[0] >> 4) & 0x7)) {
+		case MsgRecvType::Speed: return handleMsgSpeed(message);
+		case MsgRecvType::Voltage: return handleMsgVoltage(message);
 	}
+}
+
+void Wsm::handleMsgSpeed(QByteArray& message) {
+	switch (static_cast<MsgSpeedType>(message.at(1))) {
+		case MsgSpeedType::Interval: return handleMsgSpeedInterval(message);
+		case MsgSpeedType::Distance: return handleMsgSpeedDistance(message);
+	}
+}
+
+void Wsm::handleMsgSpeedInterval(QByteArray& message) {
+	if (!m_speedOk) {
+		m_speedOk = true;
+		speedReceiveRestore();
+	}
+	m_speedTimer.start(_SPEED_RECEIVE_TIMEOUT);
+
+	uint16_t interval = \
+			((static_cast<uint8_t>(message[2]) & 0x03) << 14) | \
+			((static_cast<uint8_t>(message[3]) & 0x7F) << 7) |  \
+			(static_cast<uint8_t>(message[4]) & 0x7F);
+
+	double speed;
+	if (interval == 0xFFFF) {
+		speed = 0;
+	} else {
+		speed = (static_cast<double>(M_PI) * wheelDiameter * F_CPU * 3.6 * scale / 1000) /
+				(HOLE_COUNT * PSK * interval);
+	}
+	speedRead(speed, 0xFFFF);
+	if (m_lt_measuring)
+		recordLt(speed);
+}
+
+void Wsm::handleMsgSpeedDistance(QByteArray& message) {
+	m_dist = \
+			((static_cast<uint8_t>(message[2]) & 0x0F) << 28) | \
+			((static_cast<uint8_t>(message[3]) & 0x7F) << 21) | \
+			((static_cast<uint8_t>(message[4]) & 0x7F) << 14) | \
+			((static_cast<uint8_t>(message[5]) & 0x7F) << 7) |  \
+			(static_cast<uint8_t>(message[6]) & 0x7F);
+
+	uint32_t distDelta = m_dist - m_distStart;
+	distanceRead(calcDist(distDelta), distDelta);
+}
+
+void Wsm::handleMsgVoltage(QByteArray& message) {
+	uint16_t measured = (static_cast<uint8_t>(message[1] & 0x07) << 7) |
+	                    (static_cast<uint8_t>(message[2]) & 0x7F);
+	double voltage = (measured * 4.587 / 1024);
+	batteryRead(voltage, measured);
+
+	bool critical = (message[1] >> 6) & 0x1;
+	if (critical)
+		batteryCritical();
 }
 
 void Wsm::distanceReset() {

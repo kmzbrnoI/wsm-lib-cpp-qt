@@ -38,6 +38,16 @@ struct ENoSpeedData : public QStrException {
 	ENoSpeedData(const QString str) : QStrException(str) {}
 };
 
+enum class MsgRecvType {
+	Speed = 0x1,
+	Voltage = 0x2,
+};
+
+enum class MsgSpeedType {
+	Interval = 0x81,
+	Distance = 0x82,
+};
+
 class Wsm : public QObject {
 	Q_OBJECT
 
@@ -94,6 +104,11 @@ private:
 
 	void parseMessage(QByteArray& message);
 	void recordLt(double speed);
+
+	void handleMsgSpeed(QByteArray& message);
+	void handleMsgVoltage(QByteArray& message);
+	void handleMsgSpeedInterval(QByteArray& message);
+	void handleMsgSpeedDistance(QByteArray& message);
 };
 
 }//namespace Wsm
