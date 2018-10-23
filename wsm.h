@@ -92,7 +92,7 @@ private:
 	unsigned m_lt_count_max = 0;
 	double m_lt_min = 0, m_lt_max = 0;
 
-	void parseMessage(QByteArray message);
+	void parseMessage(QByteArray& message);
 	void recordLt(double speed);
 };
 

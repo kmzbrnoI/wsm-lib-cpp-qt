@@ -76,7 +76,7 @@ void Wsm::handleError(QSerialPort::SerialPortError serialPortError) {
 		onError(m_serialPort.errorString());
 }
 
-void Wsm::parseMessage(QByteArray message) {
+void Wsm::parseMessage(QByteArray& message) {
 	constexpr uint8_t MSG_SPEED = 0x1;
 	constexpr uint8_t MSG_BATTERY = 0x2;
 
