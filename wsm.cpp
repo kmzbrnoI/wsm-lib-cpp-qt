@@ -84,7 +84,7 @@ void Wsm::parseMessage(QByteArray& message) {
 }
 
 void Wsm::handleMsgSpeed(QByteArray& message) {
-	switch (static_cast<MsgSpeedType>(message.at(1))) {
+	switch (static_cast<MsgSpeedType>(static_cast<uint8_t>(message.at(1)))) {
 		case MsgSpeedType::Interval: return handleMsgSpeedInterval(message);
 		case MsgSpeedType::Distance: return handleMsgSpeedDistance(message);
 	}
