@@ -25,8 +25,8 @@ speed and calculate abs(min-max), so the user knows diffusion.
 
 namespace Wsm {
 
-const unsigned int _BUF_IN_TIMEOUT_MS = 60;
-const unsigned int _SPEED_RECEIVE_TIMEOUT = 3000; // 3 s
+constexpr unsigned int _BUF_IN_TIMEOUT_MS = 60;
+constexpr unsigned int _SPEED_RECEIVE_TIMEOUT = 3000; // 3 s
 
 struct EOpenError : public QStrException {
 	EOpenError(const QString str) : QStrException(str) {}
