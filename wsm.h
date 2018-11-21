@@ -1,5 +1,5 @@
-#ifndef _WSM_H_
-#define _WSM_H_
+#ifndef WSM_H
+#define WSM_H
 
 /*
 This file implements a Wsm class which represents API to the Wireless
