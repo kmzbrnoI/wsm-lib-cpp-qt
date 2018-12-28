@@ -93,8 +93,8 @@ signals:
 	void speedReceiveRestore();
 
 private:
-	const unsigned int F_CPU = 3686400; // unit: Hz
-	const unsigned int PSK = 64;
+	static constexpr unsigned int F_CPU = 3686400; // unit: Hz
+	static constexpr unsigned int PSK = 64;
 
 	QSerialPort m_serialPort;
 	QByteArray m_readData;
