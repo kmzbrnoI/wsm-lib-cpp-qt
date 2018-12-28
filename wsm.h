@@ -21,7 +21,7 @@ speed and calculate abs(min-max), so the user knows diffusion.
 #include "q-str-exception.h"
 
 #define WSM_VERSION_MAJOR 1
-#define WSM_VERSION_MINOR 0
+#define WSM_VERSION_MINOR 1
 
 namespace Wsm {
 
