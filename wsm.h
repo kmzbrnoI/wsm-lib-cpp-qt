@@ -55,10 +55,18 @@ public:
 	static constexpr unsigned _VERSION_MAJOR = WSM_VERSION_MAJOR;
 	static constexpr unsigned _VERSION_MINOR = WSM_VERSION_MINOR;
 
+	static constexpr size_t DEFAULT_SCALE = 120;
+	static constexpr double DEFAULT_WHEEL_DIAMETER = 8.0;
+	static constexpr size_t DEFAULT_TICKS_PER_REVOLUTION = 8;
+
 	unsigned int scale;
 	double wheelDiameter; // unit: mm
+	size_t ticksPerRevolution;
 
-	explicit Wsm(unsigned int scale=120, double wheelDiameter = 8, QObject *parent = nullptr);
+	explicit Wsm(unsigned int scale=DEFAULT_SCALE,
+	             double wheelDiameter=DEFAULT_WHEEL_DIAMETER,
+	             size_t ticksPerRevolution=DEFAULT_TICKS_PER_REVOLUTION,
+	             QObject *parent = nullptr);
 	void distanceReset();
 	void startLongTermMeasure(unsigned count);
 	bool isSpeedOk() const;
@@ -87,7 +95,6 @@ signals:
 private:
 	const unsigned int F_CPU = 3686400; // unit: Hz
 	const unsigned int PSK = 64;
-	const unsigned int HOLE_COUNT = 8;
 
 	QSerialPort m_serialPort;
 	QByteArray m_readData;

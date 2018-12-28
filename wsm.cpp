@@ -8,8 +8,9 @@
 
 namespace Wsm {
 
-Wsm::Wsm(unsigned int scale, double wheelDiameter, QObject *parent)
-	: QObject(parent), scale(scale), wheelDiameter(wheelDiameter) {
+Wsm::Wsm(unsigned int scale, double wheelDiameter, size_t ticksPerRevolution, QObject *parent)
+	: QObject(parent), scale(scale), wheelDiameter(wheelDiameter),
+	  ticksPerRevolution(ticksPerRevolution) {
 	m_serialPort.setBaudRate(9600);
 	m_serialPort.setFlowControl(QSerialPort::FlowControl::HardwareControl);
 	m_serialPort.setReadBufferSize(256);
@@ -107,7 +108,7 @@ void Wsm::handleMsgSpeedInterval(QByteArray& message) {
 		speed = 0;
 	} else {
 		speed = (static_cast<double>(M_PI) * wheelDiameter * F_CPU * 3.6 * scale / 1000) /
-				(HOLE_COUNT * PSK * interval);
+				(ticksPerRevolution * PSK * interval);
 	}
 	speedRead(speed, 0xFFFF);
 	if (m_lt_measuring)
@@ -184,7 +185,7 @@ uint32_t Wsm::distRaw() const {
 }
 
 double Wsm::calcDist(uint32_t rawDelta) const {
-	return (rawDelta * static_cast<double>(M_PI) * wheelDiameter) / (1000 * HOLE_COUNT);
+	return (rawDelta * static_cast<double>(M_PI) * wheelDiameter) / (1000 * ticksPerRevolution);
 }
 
 }//namespace Wsm
