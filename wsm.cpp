@@ -50,7 +50,7 @@ void Wsm::handleReadyRead() {
 	}
 
 	m_readData.append(m_serialPort.readAll());
-	m_receiveTimeout = QDateTime::currentDateTime().addMSecs(_BUF_IN_TIMEOUT_MS);
+	m_receiveTimeout = QDateTime::currentDateTime().addMSecs(BUF_IN_TIMEOUT_MS);
 
 	while (m_readData.size() > 0 && m_readData.size() >= (m_readData[0] & 0x0F)+2) {
 		unsigned int length = (m_readData[0] & 0x0F)+2; // including header byte & xor
@@ -96,7 +96,7 @@ void Wsm::handleMsgSpeedInterval(QByteArray& message) {
 		m_speedOk = true;
 		speedReceiveRestore();
 	}
-	m_speedTimer.start(_SPEED_RECEIVE_TIMEOUT);
+	m_speedTimer.start(SPEED_RECEIVE_TIMEOUT);
 
 	uint16_t interval = \
 			((static_cast<uint8_t>(message[2]) & 0x03) << 14) | \
