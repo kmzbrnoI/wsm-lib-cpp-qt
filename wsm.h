@@ -52,8 +52,8 @@ class Wsm : public QObject {
 	Q_OBJECT
 
 public:
-	static constexpr unsigned VERSION_MAJOR = WSM_VERSION_MAJOR;
-	static constexpr unsigned VERSION_MINOR = WSM_VERSION_MINOR;
+	static constexpr unsigned _VERSION_MAJOR = WSM_VERSION_MAJOR;
+	static constexpr unsigned _VERSION_MINOR = WSM_VERSION_MINOR;
 
 	static constexpr size_t DEFAULT_SCALE = 120;
 	static constexpr double DEFAULT_WHEEL_DIAMETER = 8.0;
