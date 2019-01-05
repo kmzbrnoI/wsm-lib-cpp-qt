@@ -110,7 +110,7 @@ void Wsm::handleMsgSpeedInterval(QByteArray& message) {
 		speed = (static_cast<double>(M_PI) * wheelDiameter * F_CPU * 3.6 * scale / 1000) /
 				(ticksPerRevolution * PSK * interval);
 	}
-	speedRead(speed, 0xFFFF);
+	speedRead(speed, interval);
 	if (m_lt_measuring)
 		recordLt(speed);
 }
