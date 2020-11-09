@@ -22,7 +22,7 @@ There are no other requirements.
 You may use this library in two major ways:
 
  * Simply include `wsm.h` header file into your project and use instance of
-   `XpressNet` class.
+   `Wsm` class.
  * Compile this project using `qmake` and use compiled object file.
 
 ## Basic information
