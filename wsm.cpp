@@ -74,7 +74,7 @@ void Wsm::handleReadyRead() {
 
 void Wsm::handleError(QSerialPort::SerialPortError serialPortError) {
 	if (serialPortError != QSerialPort::NoError)
-		onError(m_serialPort.errorString());
+        emit onError(m_serialPort.errorString());
 }
 
 void Wsm::parseMessage(QByteArray& message) {
@@ -94,7 +94,7 @@ void Wsm::handleMsgSpeed(QByteArray& message) {
 void Wsm::handleMsgSpeedInterval(QByteArray& message) {
 	if (!m_speedOk) {
 		m_speedOk = true;
-		speedReceiveRestore();
+        emit speedReceiveRestore();
 	}
 	m_speedTimer.start(SPEED_RECEIVE_TIMEOUT);
 
@@ -110,7 +110,7 @@ void Wsm::handleMsgSpeedInterval(QByteArray& message) {
 		speed = (static_cast<double>(M_PI) * wheelDiameter * F_CPU * 3.6 * scale / 1000) /
 				(ticksPerRevolution * PSK * interval);
 	}
-	speedRead(speed, interval);
+    emit speedRead(speed, interval);
 	if (m_lt_measuring)
 		recordLt(speed);
 }
@@ -124,18 +124,18 @@ void Wsm::handleMsgSpeedDistance(QByteArray& message) {
 			(static_cast<uint8_t>(message[6]) & 0x7F);
 
 	uint32_t distDelta = m_dist - m_distStart;
-	distanceRead(calcDist(distDelta), distDelta);
+    emit distanceRead(calcDist(distDelta), distDelta);
 }
 
 void Wsm::handleMsgVoltage(QByteArray& message) {
 	uint16_t measured = (static_cast<uint8_t>(message[1] & 0x07) << 7) |
 	                    (static_cast<uint8_t>(message[2]) & 0x7F);
 	double voltage = (measured * 4.587 / 1024);
-	batteryRead(voltage, measured);
+    emit batteryRead(voltage, measured);
 
 	bool critical = (message[1] >> 6) & 0x1;
 	if (critical)
-		batteryCritical();
+        emit batteryCritical();
 }
 
 void Wsm::distanceReset() {
@@ -145,7 +145,7 @@ void Wsm::distanceReset() {
 void Wsm::t_speedTimeout() {
 	m_speedOk = false;
 	m_lt_measuring = false;
-	speedReceiveTimeout();
+    emit speedReceiveTimeout();
 }
 
 bool Wsm::isSpeedOk() const {
@@ -176,7 +176,7 @@ void Wsm::recordLt(double speed) {
 
 	if (m_lt_count == m_lt_count_max) {
 		m_lt_measuring = false;
-		longTermMeasureDone(m_lt_sum / m_lt_count, std::abs(m_lt_min-m_lt_max));
+        emit longTermMeasureDone(m_lt_sum / m_lt_count, std::abs(m_lt_min-m_lt_max));
 	}
 }
 
